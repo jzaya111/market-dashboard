@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Capital Markets & Economy — Daily Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+  :root{
+    --bg:#0B0E14; --panel:#12161F; --line:#232935; --text:#E8EAED; --muted:#8A93A6;
+    --amber:#D4A24C; --amber-dim:#8C7038; --green:#4CAF6D; --red:#E5534B; --blue:#5B8DEF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px;}
+  .topbar{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px;flex-wrap:wrap;gap:10px;}
+  .brand{display:flex;align-items:baseline;gap:10px;}
+  .brand .mark{width:9px;height:9px;background:var(--amber);border-radius:1px;display:inline-block;}
+  .brand h1{font-size:19px;font-weight:800;margin:0;}
+  .brand .sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;}
+  .asof{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted);text-align:right;line-height:1.6;}
+  .asof b{color:var(--amber);font-weight:600;}
+  .ticker{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:26px;border-radius:2px;overflow:hidden;}
+  .tick{background:var(--panel);padding:11px 14px;}
+  .tick .lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;}
+  .tick .val{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;}
+  .tick .chg{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:2px;}
+  .up{color:var(--green);} .down{color:var(--red);}
+  .sec-head{display:flex;align-items:center;gap:10px;margin:34px 0 14px;}
+  .sec-head .num{font-family:'IBM Plex Mono',monospace;color:var(--amber-dim);font-size:12px;}
+  .sec-head h2{font-size:13px;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;margin:0;}
+  .sec-head .rule{flex:1;height:1px;background:var(--line);}
+  .grid2{display:grid;grid-template-columns:1.15fr 1fr;gap:18px;}
+  @media(max-width:860px){.grid2{grid-template-columns:1fr;} .ticker{grid-template-columns:repeat(3,1fr);}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:20px;}
+  .panel h3{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin:0 0 14px;font-weight:600;}
+  .phase-label{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:600;color:var(--amber);margin:2px 0 4px;}
+  .phase-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:16px;}
+  .cycle-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+  .cycle-tags span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;border:1px solid var(--line);color:var(--muted);padding:4px 8px;border-radius:20px;}
+  .cycle-tags span.hot{border-color:var(--amber-dim);color:var(--amber);}
+  .scorecard{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:2px;overflow:hidden;}
+  .score-cell{background:var(--panel);padding:14px 16px;}
+  .score-cell .lbl{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+  .score-cell .num{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;margin-top:5px;}
+  .score-cell .prev{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);margin-top:3px;}
+  .yc-readout{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap;gap:6px;}
+  .yc-readout b{color:var(--text);}
+  .spread-pill{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;padding:3px 10px;border-radius:20px;margin-bottom:12px;border:1px solid;}
+  .spread-pos{background:rgba(76,175,109,0.1);color:var(--green);border-color:rgba(76,175,109,0.3);}
+  .spread-neg{background:rgba(229,83,75,0.1);color:var(--red);border-color:rgba(229,83,75,0.3);}
+  .news-item{padding:14px 0;border-bottom:1px solid var(--line);}
+  .news-item:last-child{border-bottom:none;}
+  .news-item .tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--amber);text-transform:uppercase;letter-spacing:0.08em;}
+  .news-item h4{margin:5px 0 5px;font-size:14.5px;font-weight:600;line-height:1.4;}
+  .news-item h4 a{color:var(--text);text-decoration:none;}
+  .news-item h4 a:hover{color:var(--amber);}
+  .news-item p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.6;}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="mark"></span>
+      <div>
+        <h1>Capital Markets &amp; Economy</h1>
+        <div class="sub">Daily Desk Brief</div>
+      </div>
+    </div>
+    <div class="asof">
+      <b>{{ date_str }}</b><br>
+      Auto-generated · {{ generated_at }} UTC
+    </div>
+  </div>
+
+  <div class="ticker">
+    {% for t in tickers %}
+    <div class="tick">
+      <div class="lbl">{{ t.label }}</div>
+      <div class="val">{{ t.value }}</div>
+      <div class="chg {{ 'up' if t.pct >= 0 else 'down' }}">{{ '%+.2f' % t.pct }}%</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="sec-head"><span class="num">01</span><h2>Where We Are — Business Cycle &amp; Rates</h2><div class="rule"></div></div>
+  <div class="grid2">
+    <div class="panel">
+      <h3>Business Cycle Position</h3>
+      <div class="phase-label">{{ cycle.phase }}</div>
+      <div class="phase-desc">{{ cycle.desc }}</div>
+      <svg viewBox="0 0 520 190" style="width:100%;height:auto;">
+        <line x1="10" y1="140" x2="510" y2="140" stroke="#232935" stroke-width="1"/>
+        <line x1="110" y1="20" x2="110" y2="160" stroke="#232935" stroke-width="1" stroke-dasharray="2,3"/>
+        <line x1="210" y1="20" x2="210" y2="160" stroke="#232935" stroke-width="1" stroke-dasharray="2,3"/>
+        <line x1="310" y1="20" x2="310" y2="160" stroke="#232935" stroke-width="1" stroke-dasharray="2,3"/>
+        <line x1="410" y1="20" x2="410" y2="160" stroke="#232935" stroke-width="1" stroke-dasharray="2,3"/>
+        <path d="M 10 140 C 60 60, 140 40, 210 60 C 270 76, 300 95, 335 120 C 375 148, 400 165, 440 158 C 470 153, 490 140, 510 128"
+              fill="none" stroke="#5B8DEF" stroke-width="2.5"/>
+        <circle cx="{{ cycle.marker_x }}" cy="{{ cycle.marker_y }}" r="6" fill="#D4A24C"/>
+        <circle cx="{{ cycle.marker_x }}" cy="{{ cycle.marker_y }}" r="11" fill="none" stroke="#D4A24C" stroke-width="1.2" opacity="0.5"/>
+        <text x="{{ cycle.marker_x }}" y="{{ cycle.marker_y - 20 }}" text-anchor="middle" fill="#D4A24C" font-family="IBM Plex Mono" font-size="10.5" font-weight="600">WE ARE HERE</text>
+        <text x="58" y="178" text-anchor="middle" fill="{{ '#D4A24C' if cycle.phase_id==0 else '#8A93A6' }}" font-family="Inter" font-size="9.5">Initial Recovery</text>
+        <text x="160" y="178" text-anchor="middle" fill="{{ '#D4A24C' if cycle.phase_id==1 else '#8A93A6' }}" font-family="Inter" font-size="9.5">Early Expansion</text>
+        <text x="260" y="178" text-anchor="middle" fill="{{ '#D4A24C' if cycle.phase_id==2 else '#8A93A6' }}" font-family="Inter" font-size="9.5">Late Expansion</text>
+        <text x="360" y="178" text-anchor="middle" fill="{{ '#D4A24C' if cycle.phase_id==3 else '#8A93A6' }}" font-family="Inter" font-size="9.5">Slowdown</text>
+        <text x="460" y="178" text-anchor="middle" fill="{{ '#D4A24C' if cycle.phase_id==4 else '#8A93A6' }}" font-family="Inter" font-size="9.5">Contraction</text>
+      </svg>
+      <div class="cycle-tags">
+        {% for tag in cycle.tags %}<span class="{{ 'hot' if tag.hot else '' }}">{{ tag.text }}</span>{% endfor %}
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Treasury Yield Curve</h3>
+      <div class="spread-pill {{ 'spread-pos' if spread_bp >= 0 else 'spread-neg' }}">10Y–2Y spread: {{ '%+d' % spread_bp }} bp ({{ 'normal slope' if spread_bp >= 0 else 'inverted' }})</div>
+      {{ yield_curve_svg | safe }}
+      <div class="yc-readout">
+        <span>2Y: <b>{{ yields.y2 }}%</b></span>
+        <span>10Y: <b>{{ yields.y10 }}%</b></span>
+        <span>30Y: <b>{{ yields.y30 }}%</b></span>
+        <span>Fed Funds: <b>{{ fedfunds }}%</b></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head"><span class="num">02</span><h2>Key Economic Numbers</h2><div class="rule"></div></div>
+  <div class="scorecard">
+    <div class="score-cell">
+      <div class="lbl">CPI, YoY</div>
+      <div class="num">{{ econ.cpi }}%</div>
+      <div class="prev">prior {{ econ.cpi_prior }}%</div>
+    </div>
+    <div class="score-cell">
+      <div class="lbl">Unemployment Rate</div>
+      <div class="num">{{ econ.unrate }}%</div>
+      <div class="prev">prior {{ econ.unrate_prior }}%</div>
+    </div>
+    <div class="score-cell">
+      <div class="lbl">Nonfarm Payrolls (chg)</div>
+      <div class="num" style="color:{{ '#4CAF6D' if econ.payrolls >= 0 else '#E5534B' }};">{{ '{:+,d}'.format(econ.payrolls) }}k</div>
+      <div class="prev">most recent monthly change</div>
+    </div>
+    <div class="score-cell">
+      <div class="lbl">Fed Funds Rate</div>
+      <div class="num">{{ fedfunds }}%</div>
+      <div class="prev">effective rate, most recent</div>
+    </div>
+  </div>
+
+  <div class="sec-head"><span class="num">03</span><h2>Top Capital Markets Headlines</h2><div class="rule"></div></div>
+  <div class="panel">
+    {% for item in headlines %}
+    <div class="news-item">
+      <div class="tag">{{ item.source }}</div>
+      <h4><a href="{{ item.link }}" target="_blank" rel="noopener">{{ item.title }}</a></h4>
+    </div>
+    {% endfor %}
+  </div>
+
+  <footer>
+    Sources: FRED (Federal Reserve Bank of St. Louis) for yields/CPI/unemployment/payrolls/Fed funds · Yahoo Finance for indices &amp; commodities · headlines pulled live via RSS. Business-cycle placement is a rule-based heuristic (see fetch_and_render.py), not an official NBER designation — treat it as a starting read, not a conclusion. Not investment advice.
+  </footer>
+
+</div>
+</body>
+</html>
