@@ -196,9 +196,12 @@ def build_yield_curve_svg(values):
         points.append(f"{x},{y:.0f}")
         highlight = label == "10Y"
         r = 4 if highlight else 3
+        circle_attrs = (
+            'fill="#fff" stroke="#D4A24C" stroke-width="2"' if highlight
+            else 'fill="#D4A24C"'
+        )
         circles.append(
-            f'<circle cx="{x}" cy="{y:.0f}" r="{r}" '
-            f'{"fill=\"#fff\" stroke=\"#D4A24C\" stroke-width=\"2\"" if highlight else "fill=\"#D4A24C\""}/>'
+            f'<circle cx="{x}" cy="{y:.0f}" r="{r}" {circle_attrs}/>'
         )
         color = "#D4A24C" if highlight else "#8A93A6"
         weight = "600" if highlight else "400"
